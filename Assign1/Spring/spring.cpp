@@ -20,5 +20,5 @@ double spring(double y_0, double v_0, double m, double gamma, double k, double t
 
 int main()
 {
-	std::cout << spring(1.0,1.5,2.0,6.0,2.0,8.0) << std::endl;
+	std::cout << "Solution for Spring Mass System: " << spring(1.0,1.5,2.0,6.0,2.0,8.0) << std::endl;
 }
