@@ -1,97 +1,93 @@
-# Math 4610 Fundamentals of Computational Mathematics Software Manual Template File
-This is a template file for building an entry in the student software manual project. You should use the formatting below to
-define an entry in your software manual.
+# Computational Mathematics Software Manual
 
-**Routine Name:**           smaceps
+## **Routine Name:** The Thomas Algorithm
 
-**Author:** Joe Koebbe
+**Author:** Raul Ramirez
 
-**Language:** Fortran. The code can be compiled using the GNU Fortran compiler (gfortran).
+**Language:** C++
 
-For example,
+**Description:** This code is given a tridiagonal matrix to solve for Ax = b. The user will hard code a tridiagonal matrix and a solution vector in order for this compute the system. This reaches into the utilities folder and calls a function called a matrix stripper, which will strip the upper, lower, and middle diagonals of the matrix and call a function name thomas to compute the work.
+    
+**Input:**  The user must hard code a tridiagonal matrix in order for this to work, and an appropriate solution vector for the method to solve. 
 
-    gfortran smaceps.f
+**Output:** The solution to Ax = b is printed out to the screen in the solution vector x.
 
-will produce an executable **./a.exe** than can be executed. If you want a different name, the following will work a bit
-better
+**Code:**
+```C++
+std::vector<double> thomas(std::vector<double> &a, std::vector<double> &b, std::vector<double> &c, std::vector<double> &f)
+{
+	
+	int n = f.size();
+	std::vector<double> x(n);
 
-    gfortran -o smaceps smaceps.f
+	for(int i = 1; i < n; ++i)
+	{
+		double m = a[i-1]/b[i-1];
+		b[i] -= m*c[i-1];
+		f[i] -= m*f[i-1];
+	}
+	
+	x[n-1] = f[n-1]/b[n-1];
 
-**Description/Purpose:** This routine will compute the single precision value for the machine epsilon or the number of digits
-in the representation of real numbers in single precision. This is a routine for analyzing the behavior of any computer. This
-usually will need to be run one time for each computer.
+	for(int i = n-2; i >= 0; --i)
+	{
+		x[i] = (f[i] - c[i]*x[i+1])/b[i];
+	}
 
-**Input:** There are no inputs needed in this case. Even though there are arguments supplied, the real purpose is to
-return values in those variables.
+	return x;
+}
 
-**Output:** This routine returns a single precision value for the number of decimal digits that can be represented on the
-computer being queried.
+std::vector<double> matrixStripper(std::vector<std::vector<double>> &A, std::vector<double> &sol)
+{
+	
+	std::vector<double> a,b,c,x;
 
-**Usage/Example:**
+	for(int i = 0; i < A.size(); ++i)
+	{
+		if(i+1 < A.size())
+		{
+			a.push_back(A[i+1][i]);
+			c.push_back(A[i][i+1]);
+		}
+		b.push_back(A[i][i]);
+	}
+	
+	x = thomas(a,b,c,sol);
 
-The routine has two arguments needed to return the values of the precision in terms of the smallest number that can be
-represented. Since the code is written in terms of a Fortran subroutine, the values of the machine machine epsilon and
-the power of two that gives the machine epsilon. Due to implicit Fortran typing, the first argument is a single precision
-value and the second is an integer.
+	return x;
+}
+```
 
-      call smaceps(sval, ipow)
-      print *, ipow, sval
+**Example:**
 
-Output from the lines above:
+```C++
+int main()
+{
+ 
+	std::vector<std::vector<double>> M = {{1, 4 ,0 ,0},
+										  {3, 4 ,1 ,0},
+										  {0, 1, 3, 4},
+										  {0, 0, 2, 3}};
 
-      24   5.96046448E-08
+	std::vector<double> f = {11,18,9,5};
+	std::vector<double> solution;
+		
+	solution = matrixStripper(M, f);
 
-The first value (24) is the number of binary digits that define the machine epsilon and the second is related to the
-decimal version of the same value. The number of decimal digits that can be represented is roughly eight (E-08 on the
-end of the second value).
+	for(auto && e: solution)
+	{
+		std::cout << e << std::endl;
+	}
+		 
+    return 0;
+}
+```
 
-**Implementation/Code:** The following is the code for smaceps()
-
-      subroutine smaceps(seps, ipow)
-    c
-    c set up storage for the algorithm
-    c --------------------------------
-    c
-          real seps, one, appone
-    c
-    c initialize variables to compute the machine value near 1.0
-    c ----------------------------------------------------------
-    c
-          one = 1.0
-          seps = 1.0
-          appone = one + seps
-    c
-    c loop, dividing by 2 each time to determine when the difference between one and
-    c the approximation is zero in single precision
-    c --------------------------------------------- 
-    c
-          ipow = 0
-          do 1 i=1,1000
-             ipow = ipow + 1
-    c
-    c update the perturbation and compute the approximation to one
-    c ------------------------------------------------------------
-    c
-            seps = seps / 2
-            appone = one + seps
-    c
-    c do the comparison and if small enough, break out of the loop and return
-    c control to the calling code
-    c ---------------------------
-    c
-            if(abs(appone-one) .eq. 0.0) return
-    c
-        1 continue
-    c
-    c if the code gets to this point, there is a bit of trouble
-    c ---------------------------------------------------------
-    c
-          print *,"The loop limit has been exceeded"
-    c
-    c done
-    c ----
-    c
-          return
-    end
-
-**Last Modified:** September/2017
+**Output**
+```
+3
+2
+1
+1
+```
+**Last Modification Date:** November 2017
