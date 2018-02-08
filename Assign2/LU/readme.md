@@ -1,97 +1,146 @@
-# Math 4610 Fundamentals of Computational Mathematics Software Manual Template File
-This is a template file for building an entry in the student software manual project. You should use the formatting below to
-define an entry in your software manual.
+# Computational Mathematics Software Manual
 
-**Routine Name:**           smaceps
+## **Routine Name:** LU Factorization
 
-**Author:** Joe Koebbe
+**Author:** Raul Ramirez
 
-**Language:** Fortran. The code can be compiled using the GNU Fortran compiler (gfortran).
+**Language:** C++
 
-For example,
+**Description:** LU Factorization routine to solve Ax = b. 
+    
+**Input:**  There are no user inputs for this program, as the program will handle the various arguments passed in the function parameters.
 
-    gfortran smaceps.f
+**Output:** The solution to Ax = b is printed out to the screen in the solution vector x.
 
-will produce an executable **./a.exe** than can be executed. If you want a different name, the following will work a bit
-better
+**Code:**
+```C++
+std::tuple<std::vector<std::vector<double>>, std::vector<std::vector<double>>, std::vector<std::vector<double>> > lUFactorize(std::vector<std::vector<double>> &A)
+{
+	int n = A.size();
+	int max;
+	double largest;
 
-    gfortran -o smaceps smaceps.f
+	std::vector<std::vector<double>> L(A.size(),std::vector<double>(A.size(),0));
+	std::vector<std::vector<double>> U(A.size(),std::vector<double>(A.size(),0));
+	std::vector<std::vector<double>> I(A.size(),std::vector<double>(A.size(),0));
+	std::vector<std::vector<double>> P(A.size(),std::vector<double>(A.size(),0));
+	std::vector<std::vector<double>> Slam(A.size(),std::vector<double>(A.size(),0));
+	std::vector<std::vector<double>> temp(A.size(),std::vector<double>(A.size(),0));
 
-**Description/Purpose:** This routine will compute the single precision value for the machine epsilon or the number of digits
-in the representation of real numbers in single precision. This is a routine for analyzing the behavior of any computer. This
-usually will need to be run one time for each computer.
+	for(int i = 0; i < n; ++i)
+	{
+		I[i][i] = 1;
+	}
+	
+	P = I;
+	U = A;
 
-**Input:** There are no inputs needed in this case. Even though there are arguments supplied, the real purpose is to
-return values in those variables.
+	
+		
+	for(int j = 0; j < n; ++j)
+	{
+		largest = U[j][j];
+		max = j;
+		for(int i = 1; i < n; ++i)
+		{
+			if(std::abs(largest) < std::abs(U[i][j]))
+			{
+				largest = U[i][j];
+				max = i;
+			}
+		}
+		
+		std::cout << largest << " " << max << std::endl;
+		if(max != j)
+		{
+			std::swap(U[j],U[max]);
+			std::swap(L[j],L[max]);
+			std::swap(P[j],P[max]);
+		}
+		for(auto&&e: U)
+		{
+			for(auto&&f:e)
+			{
+				std::cout << f << " ";
+			}
+			std::cout << std::endl;
+		}	
+		double pivot = U[j][j];
 
-**Output:** This routine returns a single precision value for the number of decimal digits that can be represented on the
-computer being queried.
+		Slam = I;
 
-**Usage/Example:**
+		for(int i = j+1; i < n; ++i)
+		{
+			Slam[i][j] = -U[i][j]/pivot;
+		}
+		
+		L = matrixDiff(matrixAdd(L,I),Slam);
+		U = matrixProd(Slam, U);
+		
+	}
 
-The routine has two arguments needed to return the values of the precision in terms of the smallest number that can be
-represented. Since the code is written in terms of a Fortran subroutine, the values of the machine machine epsilon and
-the power of two that gives the machine epsilon. Due to implicit Fortran typing, the first argument is a single precision
-value and the second is an integer.
+	L = matrixAdd(I,L);
+	
+	return {L,U,P};
 
-      call smaceps(sval, ipow)
-      print *, ipow, sval
+}
 
-Output from the lines above:
+std::vector<double> solveLU(std::vector<std::vector<double>> &L, std::vector<std::vector<double>> &U, std::vector<double> &b)
+{
+	int sum = 0;
+	std::vector<double> x(L.size(),0);
+	std::vector<double> z(L.size(),0);
 
-      24   5.96046448E-08
+	for (int i = 0; i < L.size(); ++i)
+	{
+		sum = 0;
+		for(int j = 0; j < i; ++j)
+		{
+			sum+=L[i][j]*z[j];
+		}
+		z[i]=(b[i]-sum)/L[i][i];
+	}
+	
+	for (int i = L.size()-1; i > 0; --i)
+	{
+		sum = 0;
+		for(int j = L.size()-1; j > i; --j)
+		{
+			sum+=U[i][j]*x[j];
+		}
+		x[i]=(z[i]-sum)/U[i][i];
+	}
 
-The first value (24) is the number of binary digits that define the machine epsilon and the second is related to the
-decimal version of the same value. The number of decimal digits that can be represented is roughly eight (E-08 on the
-end of the second value).
+	return x;
+}```
 
-**Implementation/Code:** The following is the code for smaceps()
+**Example:**
 
-      subroutine smaceps(seps, ipow)
-    c
-    c set up storage for the algorithm
-    c --------------------------------
-    c
-          real seps, one, appone
-    c
-    c initialize variables to compute the machine value near 1.0
-    c ----------------------------------------------------------
-    c
-          one = 1.0
-          seps = 1.0
-          appone = one + seps
-    c
-    c loop, dividing by 2 each time to determine when the difference between one and
-    c the approximation is zero in single precision
-    c --------------------------------------------- 
-    c
-          ipow = 0
-          do 1 i=1,1000
-             ipow = ipow + 1
-    c
-    c update the perturbation and compute the approximation to one
-    c ------------------------------------------------------------
-    c
-            seps = seps / 2
-            appone = one + seps
-    c
-    c do the comparison and if small enough, break out of the loop and return
-    c control to the calling code
-    c ---------------------------
-    c
-            if(abs(appone-one) .eq. 0.0) return
-    c
-        1 continue
-    c
-    c if the code gets to this point, there is a bit of trouble
-    c ---------------------------------------------------------
-    c
-          print *,"The loop limit has been exceeded"
-    c
-    c done
-    c ----
-    c
-          return
-    end
+```C++
+int main()
+{
+	
+	std::vector<std::vector<double>> A = {{1,3,2},
+										  {2,2,1},
+										  {4,2,1}};
 
-**Last Modified:** September/2017
+	std::vector<double> solution = {9,7,9};
+	
+	auto [L,U,P] = lUFactorize(A);
+	
+	std::vector<double> sol = solveLU(L,U,solution);
+
+	for (auto &&e: sol)
+	{
+		std::cout << e << std::endl;
+	}
+}
+```
+
+**Output**
+
+1
+2
+1
+
+**Last Modification Date:** November 2017
