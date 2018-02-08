@@ -6,7 +6,7 @@
 
 **Language:** C++
 
-**Description:** This code is given a tridiagonal matrix to solve for Ax = b. The user will hard code a tridiagonal matrix and a solution vector in order for this compute the system. This reaches into the utilities folder and calls a function called a matrix stripper, which will strip the upper, lower, and middle diagonals of the matrix and call a function name thomas to compute the work.
+**Description:** This code is given a tridiagonal matrix to solve for Ax = b. The user will hard code a tridiagonal matrix and a solution vector in order for this compute the system. This reaches into the utilities folder and calls a function called a matrix stripper, which will strip the upper, lower, and middle diagonals of the matrix and call a function name thomas to compute the work. This was asked for us to compute in Problem 4 of our homework assignment, and was found to be O(n). 
     
 **Input:**  The user must hard code a tridiagonal matrix in order for this to work, and an appropriate solution vector for the method to solve. 
 

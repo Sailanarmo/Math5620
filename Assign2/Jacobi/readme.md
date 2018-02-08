@@ -6,7 +6,7 @@
 
 **Language:** C++
 
-**Description:** Jacobi iteration is an iteration matrix meant to attempt to solve Ax = b. 
+**Description:** Jacobi iteration is an iteration matrix meant to attempt to solve Ax = b. This was asked for us to do in Problem 6 to compute a tridiagonal coefficient matrix. This was asked for us to compute in problem 6 and was determined to be O(n^2) computation time. 
     
 **Input:**  There are no user inputs for this program, as the program will handle the various arguments passed in the function parameters.
 

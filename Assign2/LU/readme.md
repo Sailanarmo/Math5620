@@ -6,7 +6,7 @@
 
 **Language:** C++
 
-**Description:** LU Factorization routine to solve Ax = b. 
+**Description:** LU Factorization routine to solve Ax = b. This was asked for us to compute a tridiagonal coefficient matrix using LU Factorization in Problem 5. The running time for this program was found to be O(n^3), which is a lot worse than the Thomas Algorithm which is O(n). 
     
 **Input:**  There are no user inputs for this program, as the program will handle the various arguments passed in the function parameters.
 
@@ -138,9 +138,9 @@ int main()
 ```
 
 **Output**
-
+```
 1
 2
 1
-
+```
 **Last Modification Date:** November 2017

@@ -13,7 +13,7 @@ This code was asked for us to compute problems 3 and 8 on the homework set that 
 The user will need to define what the function f(x) is in the future, the user will also need to define what the initial conditions are for the elliptic differential equation. The user will also need to input what size of mesh they would like to compute the code over.
 
 **Output:** 
-This program will give back a vector of doubles based on the size of mesh the user has inputed.
+This program will give back a vector of doubles based on the size of mesh the user has inputed. It will also compute the Vector2 Norm and VectorInf Norm of both the exact solution and the computed solution, the difference will be taken and the error is displayed on the screen.
 
 **Code:**
 ```cpp
