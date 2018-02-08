@@ -2,7 +2,7 @@
 #include <vector>
 #include <cmath>
 
-#include "../Utilities/matrixGen.hpp"
+#include "../../Utilities/matrixGen.hpp"
 
 void printVector(std::vector<double> &vec)
 {

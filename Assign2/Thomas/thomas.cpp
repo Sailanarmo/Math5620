@@ -3,7 +3,7 @@
 #include <iomanip>
 #include <cmath>
 
-#include "../Utilities/matrixGen.hpp"
+#include "../../Utilities/matrixGen.hpp"
  
 
 int main()
