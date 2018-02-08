@@ -19,8 +19,6 @@ std::vector<double> pushSolution(F f, int n, double u_a, double u_b, double a, d
 
 	double h = ((b-a)/n);
 	double h2 = h * h;	
-//	h^2 = ((b-a)/n)^2;
-
 
 	for (int i = 1; i < n; ++i)
 	{

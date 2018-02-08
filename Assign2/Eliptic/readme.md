@@ -1,97 +1,99 @@
-# Math 4610 Fundamentals of Computational Mathematics Software Manual Template File
-This is a template file for building an entry in the student software manual project. You should use the formatting below to
-define an entry in your software manual.
+# Math 5620 Elliptic Differential Equation
+This routine can compute an Elliptic Differential Equation using the Thomas Algorithm on a finite difference coefficient Matrix. It is also stubbed for future uses.
 
-**Routine Name:**           smaceps
 
-**Author:** Joe Koebbe
+**Routine Name:**           testEliptic.cpp
 
-**Language:** Fortran. The code can be compiled using the GNU Fortran compiler (gfortran).
+**Author:** Raul Ramirez
 
-For example,
+**Description/Purpose:** 
+This code was asked for us to compute problems 3 and 8 on the homework set that we received. Three was to program this problem with a stubbed version to take on future functions. While Problem 8 asked us to solve the Elliptic ODE where f(x) = sin(pi*x), which u(0) = 2.5 and u(1) = 5.0. The program takes this function captured through a lambda, and computes a solution vector using the Thomas Algorithm.
 
-    gfortran smaceps.f
+**Input:** 
+The user will need to define what the function f(x) is in the future, the user will also need to define what the initial conditions are for the elliptic differential equation. The user will also need to input what size of mesh they would like to compute the code over.
 
-will produce an executable **./a.exe** than can be executed. If you want a different name, the following will work a bit
-better
+**Output:** 
+This program will give back a vector of doubles based on the size of mesh the user has inputed.
 
-    gfortran -o smaceps smaceps.f
+**Code:**
+```cpp
+int n = 0;
+	const double PI = 3.14159;
 
-**Description/Purpose:** This routine will compute the single precision value for the machine epsilon or the number of digits
-in the representation of real numbers in single precision. This is a routine for analyzing the behavior of any computer. This
-usually will need to be run one time for each computer.
+	std::cout << "Enter a number for your mesh: ";
+	std::cin >> n;
+	n = n-1;	
+	double a = 0.0;
+	double b = 1.0;
+	
+	double h = ((b-a)/(n+1));
+	double u_a = 2.5;
+	double u_b = 5.0;
+	double vec2Norm = 0.0;	
+	double vecInfNorm = 0.0;	
+	
+	std::vector<std::vector<double>> M = makeTriDiag(n);
+	std::vector<double> sol;
+	std::vector<double> solution;
+	std::vector<double> exactDouble(n,0);
+		
+	sol = pushSolution([&](double x){return (std::sin(PI*x));}, n, u_a, u_b, a, b);
 
-**Input:** There are no inputs needed in this case. Even though there are arguments supplied, the real purpose is to
-return values in those variables.
+	solution = matrixStripper(M,sol);
 
-**Output:** This routine returns a single precision value for the number of decimal digits that can be represented on the
-computer being queried.
+	std::cout << std::endl;	
+	std::cout << "Estimated Solution: " << std::endl;
+	printVector(solution);
 
-**Usage/Example:**
+	std::cout << std::endl;
 
-The routine has two arguments needed to return the values of the precision in terms of the smallest number that can be
-represented. Since the code is written in terms of a Fortran subroutine, the values of the machine machine epsilon and
-the power of two that gives the machine epsilon. Due to implicit Fortran typing, the first argument is a single precision
-value and the second is an integer.
+	for (int i = 1; i < n+1; ++i)
+	{
+		exactDouble[i-1] = exact(a+i*h);		
+	}
 
-      call smaceps(sval, ipow)
-      print *, ipow, sval
+	std::cout << "Exact Solution: " << std::endl;
+	printVector(exactDouble);
 
-Output from the lines above:
+	std::cout << std::endl;
+	std::cout << "Vector 2 Norm: ";
+	vec2Norm = vectorNorm2(exactDouble) - vectorNorm2(solution);
+	std::cout << vec2Norm << std::endl;
 
-      24   5.96046448E-08
+	std::cout << "Vector Inf Norm: ";
+	vecInfNorm = vectorNormInf(exactDouble) - vectorNormInf(solution);
+	std::cout << vecInfNorm << std::endl;
 
-The first value (24) is the number of binary digits that define the machine epsilon and the second is related to the
-decimal version of the same value. The number of decimal digits that can be represented is roughly eight (E-08 on the
-end of the second value).
+```
+**Example:**
+```
+Enter a number for your mesh: 10
 
-**Implementation/Code:** The following is the code for smaceps()
+Estimated Solution: 
+  2.71149
+  2.92721
+  3.15085
+  3.3852
+  3.63169
+  3.89035
+  4.1597
+  4.43699
+  4.71849
 
-      subroutine smaceps(seps, ipow)
-    c
-    c set up storage for the algorithm
-    c --------------------------------
-    c
-          real seps, one, appone
-    c
-    c initialize variables to compute the machine value near 1.0
-    c ----------------------------------------------------------
-    c
-          one = 1.0
-          seps = 1.0
-          appone = one + seps
-    c
-    c loop, dividing by 2 each time to determine when the difference between one and
-    c the approximation is zero in single precision
-    c --------------------------------------------- 
-    c
-          ipow = 0
-          do 1 i=1,1000
-             ipow = ipow + 1
-    c
-    c update the perturbation and compute the approximation to one
-    c ------------------------------------------------------------
-    c
-            seps = seps / 2
-            appone = one + seps
-    c
-    c do the comparison and if small enough, break out of the loop and return
-    c control to the calling code
-    c ---------------------------
-    c
-            if(abs(appone-one) .eq. 0.0) return
-    c
-        1 continue
-    c
-    c if the code gets to this point, there is a bit of trouble
-    c ---------------------------------------------------------
-    c
-          print *,"The loop limit has been exceeded"
-    c
-    c done
-    c ----
-    c
-          return
-    end
+Exact Solution: 
+  2.71869
+  2.94044
+  3.16803
+  3.40364
+  3.64868
+  3.90364
+  4.16803
+  4.44044
+  4.71869
+
+Vector 2 Norm: 0.0303661
+Vector Inf Norm: 0.00019691
+```
+
 
 **Last Modified:** September/2017
