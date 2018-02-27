@@ -212,18 +212,47 @@ std::vector<std::vector<double>> matrixProd(std::vector<std::vector<double>> &A,
 {
 	int n = A.size();
 	std::vector<std::vector<double>> prod(n,std::vector<double>(n,0));
-
+		std::cout << "A: " << std::endl;
+		for(auto&&e: A)
+		{
+			for(auto&&f:e)
+			{
+				std::cout << f << " ";
+			}
+			std::cout << std::endl;
+		}	
+		std::cout << std::endl;
+		std::cout << "B: " << std::endl;
+		for(auto&&e: B)
+		{
+			for(auto&&f:e)
+			{
+				std::cout << f << " ";
+			}
+			std::cout << std::endl;
+		}	
+		std::cout << std::endl;
 	for(int i = 0; i < n; ++i)
 	{
 		for(int j = 0; j < n; ++j)
 		{
+			prod[i][j] = 0;
 			for(int k = 0; k < n; ++k)
 			{
-				prod[i][j] += A[i][j] * B[k][j];
+				prod[i][j] += A[i][k] * B[k][j];
 			}
 		}
 	}
-
+	std::cout << "Prod: " << std::endl;
+		for(auto&&e: prod)
+		{
+			for(auto&&f:e)
+			{
+				std::cout << f << " ";
+			}
+			std::cout << std::endl;
+		}	
+		std::cout << std::endl;
 	return prod;
 }
 
@@ -288,39 +317,11 @@ std::vector<std::vector<double>> makeTriDiag(int n)
 	return A;
 }
 
-double vectorNorm2(std::vector<double> &n)
-{
-	double vectNorm2 = 0.0;
-	for(auto &&e: n)
-	{
-		vectNorm2 += std::pow(e,2);
-	}
-
-	vectNorm2 = std::abs(vectNorm2);
-
-	return std::sqrt(vectNorm2);
-}
-
-double vectorNormInf(std::vector<double> &n)
-{
-	std::vector<double> a;
-	double vectNormInf = 0.0;
-
-	for(auto &&e: n)
-	{
-		a.push_back(std::abs(e));
-	}
-
-	vectNormInf = *std::max_element(a.begin(),a.end());
-
-	return vectNormInf;
-}
-
 std::tuple<std::vector<std::vector<double>>, std::vector<std::vector<double>>, std::vector<std::vector<double>> > lUFactorize(std::vector<std::vector<double>> &A)
 {
 	int n = A.size();
-	int max;
-	double largest;
+	int max = 0;
+	double largest = 0.0;
 
 	std::vector<std::vector<double>> L(A.size(),std::vector<double>(A.size(),0));
 	std::vector<std::vector<double>> U(A.size(),std::vector<double>(A.size(),0));
@@ -339,7 +340,7 @@ std::tuple<std::vector<std::vector<double>>, std::vector<std::vector<double>>, s
 
 	
 		
-	for(int j = 0; j < n; ++j)
+	for(int j = 0; j < n-1; ++j)
 	{
 		largest = U[j][j];
 		max = j;
@@ -352,13 +353,15 @@ std::tuple<std::vector<std::vector<double>>, std::vector<std::vector<double>>, s
 			}
 		}
 		
-		std::cout << largest << " " << max << std::endl;
-		if(max != j)
+		std::cout << "Largest: " << largest << " Max: " << max << std::endl;
+		if(largest != j)
 		{
 			std::swap(U[j],U[max]);
 			std::swap(L[j],L[max]);
 			std::swap(P[j],P[max]);
 		}
+
+		std::cout << "U: " << std::endl;
 		for(auto&&e: U)
 		{
 			for(auto&&f:e)
@@ -367,18 +370,57 @@ std::tuple<std::vector<std::vector<double>>, std::vector<std::vector<double>>, s
 			}
 			std::cout << std::endl;
 		}	
+		std::cout << std::endl;
 		double pivot = U[j][j];
 
 		Slam = I;
-
+		std::cout << "Slam: " << std::endl;
+		for(auto&&e: Slam)
+		{
+			for(auto&&f:e)
+			{
+				std::cout << f << " ";
+			}
+			std::cout << std::endl;
+		}
+		std::cout << std::endl;
 		for(int i = j+1; i < n; ++i)
 		{
 			Slam[i][j] = -U[i][j]/pivot;
 		}
 		
+		std::cout << "U: " << std::endl;
+		for(auto&&e: U)
+		{
+			for(auto&&f:e)
+			{
+				std::cout << f << " ";
+			}
+			std::cout << std::endl;
+		}	
+		std::cout << std::endl;
+		std::cout << "Slam: " << std::endl;
+		for(auto&&e: Slam)
+		{
+			for(auto&&f:e)
+			{
+				std::cout << f << " ";
+			}
+			std::cout << std::endl;
+		}
+		std::cout << std::endl;
 		L = matrixDiff(matrixAdd(L,I),Slam);
 		U = matrixProd(Slam, U);
 		
+		std::cout << "U: " << std::endl;
+		for(auto&&e: U)
+		{
+			for(auto&&f:e)
+			{
+				std::cout << f << " ";
+			}
+			std::cout << std::endl;
+		}
 	}
 
 	L = matrixAdd(I,L);
