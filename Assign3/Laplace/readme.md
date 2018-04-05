@@ -1,4 +1,4 @@
-# Math 5620 Elliptic Differential Equation
+# Math 5620 Laplace Equations
 This routine was written to give an approximate solution of the Laplace equation using different sized meshes in order to compute them
 
 **Routine Name:**           laplace.cpp

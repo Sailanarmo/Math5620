@@ -1,4 +1,4 @@
-# Math 5620 Elliptic Differential Equation
+# Math 5620 Power Methods
 This Routine will compute the Largest and Smallest Eigenvalues of a matrix. In this specific use of this routine, we used the Hilbert Matrix and an Elliptic ODE to solve.
 
 **Routine Name:**           power.cpp

@@ -1,4 +1,4 @@
-# Computational Mathematics Software Manual
+# Math 5620 Matrix Norms
 
 ## **Routine Name:** Matrix Norms
 
