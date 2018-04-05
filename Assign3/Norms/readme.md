@@ -13,7 +13,7 @@
 **Output:** The output will be the 1-Norm and the Infinity-Norm of 1000x1000 matrices produced the program, for example.
 ```
 Matrix1 Norm: 528.35
-Matrix Inf Norm: 529.913: 528.35
+Matrix Inf Norm: 529.913
 ```
 
 **Code:**
@@ -71,4 +71,4 @@ int main()
 }
 ```
 
-**Last Modification Date:** November 2017
+**Last Modification Date:** March/2018
