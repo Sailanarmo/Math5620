@@ -2,7 +2,7 @@
 
 ## **Routine Name:** Laplace5
 
-**Author:** Nitasha Jeske
+**Author:** Raul Ramirez
 
 **Language:** C++
 

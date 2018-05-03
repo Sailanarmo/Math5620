@@ -2,7 +2,7 @@
 
 ## **Routine Name:** impEuler
 
-**Author:** Nitasha Jeske
+**Author:** Raul Ramirez
 
 **Language:** C++
 

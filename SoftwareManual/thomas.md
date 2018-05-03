@@ -2,7 +2,7 @@
 
 ## **Routine Name:** thomas
 
-**Author:** Nitasha Jeske
+**Author:** Raul Ramirez
 
 **Language:** C++
 

@@ -2,7 +2,7 @@
 
 ## **Routine Name:** log_de
 
-**Author:** Nitasha Jeske
+**Author:** Raul Ramirez
 
 **Language:** C++
 

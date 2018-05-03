@@ -2,7 +2,7 @@
 
 ## **Routine Name:** logPop
 
-**Author:** Nitasha Jeske
+**Author:** Raul Ramirez
 
 **Language:** C++
 

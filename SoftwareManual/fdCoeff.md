@@ -2,7 +2,7 @@
 
 ## **Routine Name:** fdCoeff
 
-**Author:** Nitasha Jeske
+**Author:** Raul Ramirez
 
 **Language:** C++
 

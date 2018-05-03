@@ -2,7 +2,7 @@
 
 ## **Routine Name:** Euler
 
-**Author:** Nitasha Jeske
+**Author:** Raul Ramirez
 
 **Language:** C++
 

@@ -2,7 +2,7 @@
 
 ## **Routine Name:** randk_ode
 
-**Author:** Nitasha Jeske
+**Author:** Raul Ramirez
 
 **Language:** C++
 

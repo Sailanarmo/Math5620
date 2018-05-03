@@ -2,7 +2,7 @@
 
 ## **Routine Name:** Laplace9
 
-**Author:** Nitasha Jeske
+**Author:** Raul Ramirez
 
 **Language:** C++
 

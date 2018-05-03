@@ -2,7 +2,7 @@
 
 ## **Routine Name:** RungeKutta4
 
-**Author:** Nitasha Jeske
+**Author:** Raul Ramirez
 
 **Language:** C++
 

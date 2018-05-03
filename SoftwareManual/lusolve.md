@@ -2,7 +2,7 @@
 
 ## **Routine Name:** lusolve
 
-**Author:** Nitasha Jeske
+**Author:** Raul Ramirez
 
 **Language:** C++
 
