@@ -1,65 +1,63 @@
-# Math 5620 Jacobi and Conjugate Gradient Method
-The Jacobi Iteration Method is a method which converges on an answer. If needed, this can be used to compute something that is not too computationally intensive. Conjugate Gradient should just be avoided all together unless you are dealing with a symetric matrix.
+# Math 5620 Explicit Euler
 
 **Author:** Raul Ramirez
 
 **Description/Purpose:** 
-This code was asked for us to compute problem 2 and to compare with Gauss-Seidel method.
+This code was asked for us to compute problem 2. Euler was used in the last assignment and therefore the description has already been given.
 
 **Input:** 
-There are no inputs needed from the user, however, the Utilities folder contains the Matrix Gen file that contains the Jacobi and Conjugate Gradient methods within.
+There are no inputs needed from the user, however, the Utilities folder contains the Matrix Gen file that contains the Explicit Euler Method
 
 **Output:** 
-This program will take a matrix A and a vector B and return the solution.
-
+A double with the exact and approximated solutions
 **Code:**
 ```cpp
 int main()
 {
 	
-	std::vector<std::vector<double>> A = {{16,3},
-	                                      {7,-11}};		
+    double dt = 0.00001;
+	double alpha = 10.0;
+	double beta = 0.0001;
+	double gamma = 0.01;
 	
-	std::vector<double> b = {11,13};
-	int gaussCounter = 0;	
-	int jacobiCounter = 0;	
-	int conjugateCounter = 0;	
-	std::vector<double> Gauss = gauss(A,b,gaussCounter);	
-	std::vector<double> Jacobi = jacobi(A,b,jacobiCounter);	
-	std::vector<double> Conjugate = conjugate(A,b,conjugateCounter);	
+	std::vector<double> lambdas {1.0, -1.0, 100.0};
+	std::vector<double> P_0 {25.0, 40000.0};
 
-	std::cout << "A:" << std::endl;
-	printMatrix(A);
-	std::cout << "b:" << std::endl;
-	printVector(b);
-	
-	std::cout << std::endl;
-	std::cout << "Gauss-Seidel Iterations: " << gaussCounter << std::endl;
-	printSolution(Gauss);
-	std::cout << "Jacobi Method Iterations: " << jacobiCounter << std::endl;
-	printSolution(Jacobi);
-	std::cout << "Conjugate Method Iterations: " << conjugateCounter << std::endl;
-	printSolution(Conjugate);
+	std::cout << "Lambda" << std::endl;
+	for (auto && e: lambdas)
+	{
+		std::cout << explicitEuler(alpha,beta,gamma, dt, [&](double a, double b) { (void)b; return lambda * a;}) << std::endl;
+	}
+
+	std::cout << "Logistic" << std::endl;
+	for (auto && e: P_0)
+	{
+		std::cout << explicitEuler(alpha,beta,gamma, dt, [&](double a, double b) { (void)b; return gamma * a-beta * a * a;}) << std::endl;
+	}
 }
 ```
 
 **Results**
 ```
-A:
-16   3
-7  -11
+Lambda = 1
+exact = 27.1828
+approximation = 27.1824
 
-b:
-11 13
+Lambda = -1
+exact = 3.67879
+approximation = 3.67881
 
-Gauss-Seidel Iterations: 18
-0.812   -0.665
+Lambda = 100
+exact = 2.68812e+44
+approximation = 2.55455e+44
 
-Jacobi Method Iterations: 35
-0.812   -0.665
+p0 = 25
+exact = 27.5568
+approximation = 27.5568
 
-Conjugate Method Iterations: 75
-0.812   -0.665
+p0 = 40000
+exact = 8490.15
+approximation = 8490.11
 ```
 
 **Last Modified:** March 2018
